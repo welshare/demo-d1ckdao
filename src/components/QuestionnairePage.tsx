@@ -38,16 +38,37 @@ export const QuestionnairePage = () => {
 
   if (submitted) {
     return (
-      <div className="questionnaire-page">
-        <div className="questionnaire-header">
-          <h1>Thank You!</h1>
+      <>
+        <header className="app-header">
+          <div className="app-logo">DuckDao</div>
+          <div className="app-disclaimer">This is a demo and not supposed for production use</div>
+        </header>
+        <div className="questionnaire-page">
+          <div className="questionnaire-header">
+            <h1>Thank You!</h1>
+          </div>
+          <div className="page-content">
+            <p style={{ textAlign: 'center', fontSize: '1.2rem' }}>
+              Thank you for your submission. Your responses have been securely stored on Welshare.
+            </p>
+          </div>
         </div>
-        <div className="page-content">
-          <p style={{ textAlign: 'center', fontSize: '1.2rem' }}>
-            Thank you for your submission. Your responses have been securely stored on Welshare.
-          </p>
-        </div>
-      </div>
+        <footer className="app-footer">
+          <div className="footer-left">
+            Copyright by Welshare UG (haftungsbeschränkt)
+          </div>
+          <div className="footer-right">
+            This is a demo of how to submit ED questionnaires to the private welshare wallet.{' '}
+            <a href="https://docs.welshare.app/sdk" target="_blank" rel="noopener noreferrer">
+              Find out more on Welshare's docs
+            </a>
+            {' · '}
+            <a href="https://staging.wallet.welshare.app/api/questionnaire/63025fed-3ab2-4c66-963a-7fba79ca40a9" target="_blank" rel="noopener noreferrer">
+              Questionnaire definition
+            </a>
+          </div>
+        </footer>
+      </>
     );
   }
 
@@ -114,8 +135,13 @@ export const QuestionnairePage = () => {
   };
 
   return (
-    <div className="questionnaire-page">
-      <div className="questionnaire-header">
+    <>
+      <header className="app-header">
+        <div className="app-logo">DuckDao</div>
+        <div className="app-disclaimer">This is a demo and not supposed for production use</div>
+      </header>
+      <div className="questionnaire-page">
+        <div className="questionnaire-header">
         <h1>{questionnaire.title}</h1>
         <div className="progress-bar">
           <div
@@ -163,6 +189,22 @@ export const QuestionnairePage = () => {
           </button>
         )}
       </div>
-    </div>
+      </div>
+      <footer className="app-footer">
+        <div className="footer-left">
+          Copyright by Welshare UG (haftungsbeschränkt)
+        </div>
+        <div className="footer-right">
+          
+          <a href="https://docs.welshare.app/sdk" target="_blank" rel="noopener noreferrer">
+            Welshare docs
+          </a>
+          {' · '}
+          <a href="https://staging.wallet.welshare.app/api/questionnaire/63025fed-3ab2-4c66-963a-7fba79ca40a9" target="_blank" rel="noopener noreferrer">
+            Questionnaire definition
+          </a>
+        </div>
+      </footer>
+    </>
   );
 };
