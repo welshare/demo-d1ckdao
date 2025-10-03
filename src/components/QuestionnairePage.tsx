@@ -1,12 +1,28 @@
-import { useState } from 'react';
-import { useQuestionnaire } from '../contexts/QuestionnaireContext';
-import type { QuestionnaireItem } from '../types/fhir';
-import { QuestionRenderer } from './QuestionRenderer';
-import './QuestionnairePage.css';
+import { useState, useEffect, useRef } from "react";
+import { useWelshare, WelshareLogo } from "@welshare/react";
+import { Schemas } from "@welshare/react";
+import { useQuestionnaire } from "../contexts/QuestionnaireContext";
+import type { QuestionnaireItem } from "../types/fhir";
+import { QuestionRenderer } from "./QuestionRenderer";
+import "./QuestionnairePage.css";
 
 export const QuestionnairePage = () => {
   const { questionnaire, response, isLoading, error } = useQuestionnaire();
+  const { isConnected, openWallet, submitData, isSubmitting } = useWelshare({
+    applicationId: import.meta.env.VITE_APP_ID,
+    apiBaseUrl: "https://staging.wallet.welshare.app",
+    environment: import.meta.env.VITE_ENVIRONMENT,
+  });
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
+  const [submitted, setSubmitted] = useState(false);
+  const wasSubmitting = useRef(false);
+
+  useEffect(() => {
+    if (wasSubmitting.current && !isSubmitting) {
+      setSubmitted(true);
+    }
+    wasSubmitting.current = isSubmitting;
+  }, [isSubmitting]);
 
   if (isLoading) {
     return <div className="loading">Loading questionnaire...</div>;
@@ -20,8 +36,23 @@ export const QuestionnairePage = () => {
     return <div className="error">No questionnaire data available</div>;
   }
 
+  if (submitted) {
+    return (
+      <div className="questionnaire-page">
+        <div className="questionnaire-header">
+          <h1>Thank You!</h1>
+        </div>
+        <div className="page-content">
+          <p style={{ textAlign: 'center', fontSize: '1.2rem' }}>
+            Thank you for your submission. Your responses have been securely stored on Welshare.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   // Each top-level group item is a page
-  const pages = questionnaire.item.filter(item => item.type === 'group');
+  const pages = questionnaire.item.filter((item) => item.type === "group");
   const currentPage = pages[currentPageIndex];
 
   const handleNext = () => {
@@ -38,14 +69,38 @@ export const QuestionnairePage = () => {
     }
   };
 
-  const handleSubmit = () => {
-    console.log('Questionnaire Response:', JSON.stringify(response, null, 2));
-    alert('Questionnaire submitted! Check console for response data.');
+  const handleSubmit = async () => {
+    if (!isConnected) {
+      alert("Please connect your wallet first");
+      return;
+    }
+
+    try {
+      
+      // Add questionnaire ID to the response
+      const questionnaireResponse = {
+        ...response,
+        questionnaire: import.meta.env.VITE_QUESTIONNAIRE_ID,
+      };
+
+      console.log(
+        "Submitting Questionnaire Response:",
+        JSON.stringify(questionnaireResponse, null, 2)
+      );
+
+      submitData(
+        Schemas.QuestionnaireResponse,
+        questionnaireResponse
+      );
+    } catch (error) {
+      console.error("Submission error:", error);
+      alert("Failed to submit questionnaire. Please try again.");
+    }
   };
 
   const renderQuestions = (items: QuestionnaireItem[]) => {
     return items.map((item) => {
-      if (item.type === 'group') {
+      if (item.type === "group") {
         // Nested groups (shouldn't happen at this level based on the structure)
         return (
           <div key={item.linkId} className="question-group">
@@ -65,7 +120,9 @@ export const QuestionnairePage = () => {
         <div className="progress-bar">
           <div
             className="progress-fill"
-            style={{ width: `${((currentPageIndex + 1) / pages.length) * 100}%` }}
+            style={{
+              width: `${((currentPageIndex + 1) / pages.length) * 100}%`,
+            }}
           />
         </div>
         <div className="page-indicator">
@@ -91,9 +148,18 @@ export const QuestionnairePage = () => {
           <button className="btn btn-primary" onClick={handleNext}>
             Next
           </button>
+        ) : !isConnected ? (
+          <button className="btn btn-success" onClick={openWallet}>
+            <WelshareLogo /> Connect Wallet to Submit
+          </button>
         ) : (
-          <button className="btn btn-success" onClick={handleSubmit}>
-            Submit
+          <button
+            className="btn btn-success"
+            onClick={handleSubmit}
+            disabled={isSubmitting}
+          >
+            <WelshareLogo />
+            {isSubmitting ? "Submitting..." : "Submit"}
           </button>
         )}
       </div>
