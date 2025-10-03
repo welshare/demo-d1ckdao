@@ -6,18 +6,23 @@
 
 .questionnaire-header {
   margin-bottom: 2rem;
+  background: #d4f503;
+  padding: 2rem;
+  border-radius: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .questionnaire-header h1 {
   font-size: 1.75rem;
-  color: #2c3e50;
+  color: #266d16;
   margin-bottom: 1.5rem;
+  margin-top: 0;
 }
 
 .progress-bar {
   width: 100%;
   height: 8px;
-  background: #e0e0e0;
+  background: #324158;
   border-radius: 4px;
   overflow: hidden;
   margin-bottom: 0.5rem;
@@ -25,21 +30,22 @@
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #646cff, #535bf2);
+  background: #18df72;
   transition: width 0.3s ease;
 }
 
 .page-indicator {
   text-align: center;
-  color: #666;
+  color: #266d16;
   font-size: 0.9rem;
-  font-weight: 500;
+  font-weight: 600;
+  margin-bottom: 0;
 }
 
 .page-content {
-  background: white;
+  background: #d4f503;
   padding: 2rem;
-  border-radius: 12px;
+  border-radius: 24px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 2rem;
 }
@@ -48,8 +54,8 @@
   font-size: 1.5rem;
   color: #2c3e50;
   margin-bottom: 2rem;
-  padding-bottom: 1rem;
-  border-bottom: 2px solid #e0e0e0;
+  text-transform: uppercase;
+  
 }
 
 .question-group {
@@ -70,11 +76,11 @@
 }
 
 .btn {
-  padding: 0.75rem 2rem;
+  padding: 1.25rem 3rem;
   font-size: 1rem;
   font-weight: 600;
   border: none;
-  border-radius: 8px;
+  border-radius: 50px;
   cursor: pointer;
   transition: all 0.2s ease;
   font-family: inherit;
@@ -86,34 +92,37 @@
 }
 
 .btn-primary {
-  background: #646cff;
-  color: white;
+  background: #d4f503;
+  color: #266d16;
+  font-weight: 700;
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: #535bf2;
+  background: #c5e603;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(100, 108, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(212, 245, 3, 0.3);
 }
 
 .btn-secondary {
-  background: #e0e0e0;
-  color: #2c3e50;
+  background: #354152;
+  color: white;
+  font-weight: 700;
 }
 
 .btn-secondary:hover:not(:disabled) {
-  background: #d0d0d0;
+  background: #2a3343;
 }
 
 .btn-success {
-  background: #27ae60;
-  color: white;
+  background: #d4f503;
+  color: #266d16;
+  font-weight: 700;
 }
 
 .btn-success:hover {
-  background: #229954;
+  background: #c5e603;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+  box-shadow: 0 4px 12px rgba(212, 245, 3, 0.3);
 }
 
 .loading,

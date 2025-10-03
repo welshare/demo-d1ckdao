@@ -4,7 +4,7 @@
 
 .question-text {
   font-size: 1.1rem;
-  font-weight: 500;
+  font-weight: 600;
   margin-bottom: 1rem;
   color: #1a1a1a;
 }
@@ -24,29 +24,54 @@
   display: flex;
   align-items: center;
   padding: 1rem;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
+  border: 2px solid #266d16;
+  border-radius: 16px;
   cursor: pointer;
   transition: all 0.2s ease;
   background: white;
 }
 
 .choice-option:hover {
-  border-color: #646cff;
-  background: #f8f9ff;
+  border-color: #1a4f0f;
+  background: #f0ffe0;
 }
 
 .choice-option.selected {
-  border-color: #646cff;
-  background: #f0f2ff;
+  border-color: #15c850;
+  background: #15c850;
+  font-weight: 600;
+  color: white;
 }
 
 .choice-option input[type="radio"] {
   margin-right: 0.75rem;
   cursor: pointer;
-  width: 1.25rem;
-  height: 1.25rem;
-  accent-color: #646cff;
+  width: 2.5rem;
+  height: 2.5rem;
+  appearance: none;
+  -webkit-appearance: none;
+  border: 2px solid black;
+  border-radius: 50%;
+  background: white;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.choice-option input[type="radio"]:checked {
+  border: 12px solid black;
+  background: white;
+}
+
+.choice-option input[type="radio"]:checked::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: white;
 }
 
 .choice-label {
@@ -55,19 +80,25 @@
   color: #2c3e50;
 }
 
+.choice-option.selected .choice-label {
+  color: white;
+}
+
 .question-input {
   width: 100%;
   padding: 0.75rem 1rem;
   font-size: 1rem;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
+  border: 2px solid #266d16;
+  border-radius: 16px;
   transition: border-color 0.2s ease;
   font-family: inherit;
+  background: white;
 }
 
 .question-input:focus {
   outline: none;
-  border-color: #646cff;
+  border-color: #1a4f0f;
+  background: #f0ffe0;
 }
 
 .unsupported-type {
