@@ -40,16 +40,21 @@ export const QuestionnairePage = () => {
     return (
       <>
         <header className="app-header">
-          <div className="app-logo">DuckDao</div>
-          <div className="app-disclaimer">This is a demo and not supposed for production use</div>
+          <div className="app-logo">
+            <WelshareLogo /> DuckDao
+          </div>
+          <div className="app-disclaimer">
+            This is a demo and not supposed to be used in production
+          </div>
         </header>
         <div className="questionnaire-page">
           <div className="questionnaire-header">
             <h1>Thank You!</h1>
           </div>
           <div className="page-content">
-            <p style={{ textAlign: 'center', fontSize: '1.2rem' }}>
-              Thank you for your submission. Your responses have been securely stored on Welshare.
+            <p style={{ textAlign: "center", fontSize: "1.2rem" }}>
+              Thank you for your submission. Your responses have been securely
+              stored on Welshare.
             </p>
           </div>
         </div>
@@ -58,12 +63,21 @@ export const QuestionnairePage = () => {
             Copyright by Welshare UG (haftungsbeschränkt)
           </div>
           <div className="footer-right">
-            This is a demo of how to submit ED questionnaires to the private welshare wallet.{' '}
-            <a href="https://docs.welshare.app/sdk" target="_blank" rel="noopener noreferrer">
+            This is a demo of how to submit ED questionnaires to the private
+            welshare wallet.{" "}
+            <a
+              href="https://docs.welshare.app/sdk"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               Find out more on Welshare's docs
             </a>
-            {' · '}
-            <a href="https://staging.wallet.welshare.app/api/questionnaire/63025fed-3ab2-4c66-963a-7fba79ca40a9" target="_blank" rel="noopener noreferrer">
+            {" · "}
+            <a
+              href="https://staging.wallet.welshare.app/api/questionnaire/63025fed-3ab2-4c66-963a-7fba79ca40a9"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               Questionnaire definition
             </a>
           </div>
@@ -97,7 +111,6 @@ export const QuestionnairePage = () => {
     }
 
     try {
-      
       // Add questionnaire ID to the response
       const questionnaireResponse = {
         ...response,
@@ -109,10 +122,7 @@ export const QuestionnairePage = () => {
         JSON.stringify(questionnaireResponse, null, 2)
       );
 
-      submitData(
-        Schemas.QuestionnaireResponse,
-        questionnaireResponse
-      );
+      submitData(Schemas.QuestionnaireResponse, questionnaireResponse);
     } catch (error) {
       console.error("Submission error:", error);
       alert("Failed to submit questionnaire. Please try again.");
@@ -137,70 +147,81 @@ export const QuestionnairePage = () => {
   return (
     <>
       <header className="app-header">
-        <div className="app-logo">DuckDao</div>
-        <div className="app-disclaimer">This is a demo and not supposed for production use</div>
+        <div className="app-logo">
+          <WelshareLogo /> DuckDao
+        </div>
+        <div className="app-disclaimer">
+          This is a demo and not supposed to be used in production
+        </div>
       </header>
       <div className="questionnaire-page">
         <div className="questionnaire-header">
-        <h1>{questionnaire.title}</h1>
-        <div className="progress-bar">
-          <div
-            className="progress-fill"
-            style={{
-              width: `${((currentPageIndex + 1) / pages.length) * 100}%`,
-            }}
-          />
+          <h1>{questionnaire.title}</h1>
+          <div className="progress-bar">
+            <div
+              className="progress-fill"
+              style={{
+                width: `${((currentPageIndex + 1) / pages.length) * 100}%`,
+              }}
+            />
+          </div>
+          <div className="page-indicator">
+            Page {currentPageIndex + 1} of {pages.length}
+          </div>
         </div>
-        <div className="page-indicator">
-          Page {currentPageIndex + 1} of {pages.length}
+
+        <div className="page-content">
+          <h2 className="page-title">{currentPage.text}</h2>
+          {currentPage.item && renderQuestions(currentPage.item)}
         </div>
-      </div>
 
-      <div className="page-content">
-        <h2 className="page-title">{currentPage.text}</h2>
-        {currentPage.item && renderQuestions(currentPage.item)}
-      </div>
-
-      <div className="navigation-buttons">
-        <button
-          className="btn btn-secondary"
-          onClick={handlePrevious}
-          disabled={currentPageIndex === 0}
-        >
-          Previous
-        </button>
-
-        {currentPageIndex < pages.length - 1 ? (
-          <button className="btn btn-primary" onClick={handleNext}>
-            Next
-          </button>
-        ) : !isConnected ? (
-          <button className="btn btn-success" onClick={openWallet}>
-            <WelshareLogo /> Connect Wallet to Submit
-          </button>
-        ) : (
+        <div className="navigation-buttons">
           <button
-            className="btn btn-success"
-            onClick={handleSubmit}
-            disabled={isSubmitting}
+            className="btn btn-secondary"
+            onClick={handlePrevious}
+            disabled={currentPageIndex === 0}
           >
-            <WelshareLogo />
-            {isSubmitting ? "Submitting..." : "Submit"}
+            Previous
           </button>
-        )}
-      </div>
+
+          {currentPageIndex < pages.length - 1 ? (
+            <button className="btn btn-primary" onClick={handleNext}>
+              Next
+            </button>
+          ) : !isConnected ? (
+            <button className="btn btn-success" onClick={openWallet}>
+              <WelshareLogo /> Connect Wallet to Submit
+            </button>
+          ) : (
+            <button
+              className="btn btn-success"
+              onClick={handleSubmit}
+              disabled={isSubmitting}
+            >
+              <WelshareLogo />
+              {isSubmitting ? "Submitting..." : "Submit"}
+            </button>
+          )}
+        </div>
       </div>
       <footer className="app-footer">
         <div className="footer-left">
           Copyright by Welshare UG (haftungsbeschränkt)
         </div>
         <div className="footer-right">
-          
-          <a href="https://docs.welshare.app/sdk" target="_blank" rel="noopener noreferrer">
+          <a
+            href="https://docs.welshare.app/sdk"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Welshare docs
           </a>
-          {' · '}
-          <a href="https://staging.wallet.welshare.app/api/questionnaire/63025fed-3ab2-4c66-963a-7fba79ca40a9" target="_blank" rel="noopener noreferrer">
+          {" · "}
+          <a
+            href="https://staging.wallet.welshare.app/api/questionnaire/63025fed-3ab2-4c66-963a-7fba79ca40a9"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Questionnaire definition
           </a>
         </div>
