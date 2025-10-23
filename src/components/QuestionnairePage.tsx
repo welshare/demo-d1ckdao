@@ -6,11 +6,11 @@ import { QuestionRenderer } from "./QuestionRenderer";
 import "./QuestionnairePage.css";
 
 export const QuestionnairePage = () => {
-  const { questionnaire, response, isLoading, error } = useQuestionnaire();
+  const { questionnaire, response, isLoading, error, isPageValid } = useQuestionnaire();
   const { isConnected, openWallet, submitData, isSubmitting } = useWelshare({
     applicationId: import.meta.env.VITE_APP_ID,
-    apiBaseUrl: "https://staging.wallet.welshare.app",
-    //apiBaseUrl: "https://localhost:3000",
+    //apiBaseUrl: "https://staging.wallet.welshare.app",
+    apiBaseUrl: "https://localhost:3000",
     environment: import.meta.env.VITE_ENVIRONMENT,
   });
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
@@ -90,6 +90,9 @@ export const QuestionnairePage = () => {
   // Each top-level group item is a page
   const pages = questionnaire.item.filter((item) => item.type === "group");
   const currentPage = pages[currentPageIndex];
+  
+  // Check if current page is valid (all required questions answered)
+  const isCurrentPageValid = currentPage?.item ? isPageValid(currentPage.item) : true;
 
   const handleNext = () => {
     if (currentPageIndex < pages.length - 1) {
@@ -183,18 +186,26 @@ export const QuestionnairePage = () => {
           </button>
 
           {currentPageIndex < pages.length - 1 ? (
-            <button className="btn btn-primary" onClick={handleNext}>
+            <button 
+              className="btn btn-primary" 
+              onClick={handleNext}
+              disabled={!isCurrentPageValid}
+            >
               Next
             </button>
           ) : !isConnected ? (
-            <button className="btn btn-success" onClick={openWallet}>
+            <button 
+              className="btn btn-success" 
+              onClick={openWallet}
+              disabled={!isCurrentPageValid}
+            >
               <WelshareLogo /> Connect Wallet to Submit
             </button>
           ) : (
             <button
               className="btn btn-success"
               onClick={handleSubmit}
-              disabled={isSubmitting}
+              disabled={isSubmitting || !isCurrentPageValid}
             >
               <WelshareLogo />
               {isSubmitting ? "Submitting..." : "Submit"}

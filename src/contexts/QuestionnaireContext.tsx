@@ -1,11 +1,13 @@
-import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
-import type { Questionnaire, QuestionnaireResponse, QuestionnaireResponseItem, QuestionnaireResponseAnswer } from '../types/fhir';
+import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import type { Questionnaire, QuestionnaireItem, QuestionnaireResponse, QuestionnaireResponseAnswer, QuestionnaireResponseItem } from '../types/fhir';
 
 interface QuestionnaireContextType {
   questionnaire: Questionnaire | null;
   response: QuestionnaireResponse;
   updateAnswer: (linkId: string, answer: QuestionnaireResponseAnswer) => void;
   getAnswer: (linkId: string) => QuestionnaireResponseAnswer | undefined;
+  isPageValid: (pageItems: QuestionnaireItem[]) => boolean;
+  getRequiredQuestions: (pageItems: QuestionnaireItem[]) => QuestionnaireItem[];
   isLoading: boolean;
   error: string | null;
 }
@@ -98,6 +100,29 @@ export const QuestionnaireProvider = ({ children }: QuestionnaireProviderProps) 
     return item?.answer?.[0];
   };
 
+  const getRequiredQuestions = (pageItems: QuestionnaireItem[]): QuestionnaireItem[] => {
+    return pageItems.filter(item => item.required === true);
+  };
+
+  const isPageValid = (pageItems: QuestionnaireItem[]): boolean => {
+    const requiredQuestions = getRequiredQuestions(pageItems);
+    
+    return requiredQuestions.every(question => {
+      const answer = getAnswer(question.linkId);
+      if (!answer) return false;
+      
+      // Check if the answer has any meaningful value
+      return answer.valueBoolean !== undefined ||
+             answer.valueInteger !== undefined ||
+             answer.valueDecimal !== undefined ||
+             answer.valueString !== undefined ||
+             answer.valueCoding !== undefined ||
+             answer.valueDate !== undefined ||
+             answer.valueDateTime !== undefined ||
+             answer.valueTime !== undefined;
+    });
+  };
+
   return (
     <QuestionnaireContext.Provider
       value={{
@@ -105,6 +130,8 @@ export const QuestionnaireProvider = ({ children }: QuestionnaireProviderProps) 
         response,
         updateAnswer,
         getAnswer,
+        isPageValid,
+        getRequiredQuestions,
         isLoading,
         error,
       }}

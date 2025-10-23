@@ -125,7 +125,7 @@ export const QuestionRenderer = ({ item }: QuestionRendererProps) => {
   };
 
   return (
-    <div className="question-container">
+    <div className={`question-container ${item.required ? 'required' : ''}`}>
       <div className="question-text">
         {item.text}
         {item.required && <span className="required-indicator">*</span>}
