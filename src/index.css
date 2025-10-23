@@ -7,6 +7,8 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  --border-color: rgb(39, 39, 42);
+  --text-color: rgb(161, 161, 170);
 }
 
 a {
@@ -22,9 +24,9 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background: linear-gradient(to bottom, #246815, #41c624);
+  background: #000;
   background-attachment: fixed;
-  color: #1a1a1a;
+  color: var(--text-color);
 }
 
 h1 {

@@ -1,6 +1,5 @@
-import { useState, useEffect, useRef } from "react";
-import { useWelshare, WelshareLogo } from "@welshare/react";
-import { Schemas } from "@welshare/react";
+import { Schemas, useWelshare, WelshareLogo } from "@welshare/react";
+import { useEffect, useRef, useState } from "react";
 import { useQuestionnaire } from "../contexts/QuestionnaireContext";
 import type { QuestionnaireItem } from "../types/fhir";
 import { QuestionRenderer } from "./QuestionRenderer";
@@ -10,7 +9,8 @@ export const QuestionnairePage = () => {
   const { questionnaire, response, isLoading, error } = useQuestionnaire();
   const { isConnected, openWallet, submitData, isSubmitting } = useWelshare({
     applicationId: import.meta.env.VITE_APP_ID,
-    apiBaseUrl: "https://staging.wallet.welshare.app",
+    //apiBaseUrl: "https://staging.wallet.welshare.app",
+    apiBaseUrl: "https://localhost:3000",
     environment: import.meta.env.VITE_ENVIRONMENT,
   });
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
@@ -148,10 +148,7 @@ export const QuestionnairePage = () => {
     <>
       <header className="app-header">
         <div className="app-logo">
-          <WelshareLogo /> DuckDao
-        </div>
-        <div className="app-disclaimer">
-          This is a demo and not supposed to be used in production
+          <img src="/lime-green-text-logo.png" alt="DickXBT Logo" width={180} />
         </div>
       </header>
       <div className="questionnaire-page">
@@ -205,16 +202,22 @@ export const QuestionnairePage = () => {
         </div>
       </div>
       <footer className="app-footer">
-        <div className="footer-left">
-          Copyright by Welshare UG (haftungsbeschränkt)
-        </div>
+        <div className="footer-left">© DICKGPT</div>
         <div className="footer-right">
+          <a
+            href="https://welshare.health"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            supported by Welshare
+          </a>
+          {" · "}
           <a
             href="https://docs.welshare.app/sdk"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Welshare docs
+            docs
           </a>
           {" · "}
           <a
