@@ -132,6 +132,11 @@
   cursor: not-allowed;
 }
 
+.btn-disabled {
+  opacity: 0.5;
+  cursor: pointer;
+}
+
 .btn-primary {
   background: var(--accent-color);
   color: black;

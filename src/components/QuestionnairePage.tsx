@@ -6,11 +6,11 @@ import { QuestionRenderer } from "./QuestionRenderer";
 import "./QuestionnairePage.css";
 
 export const QuestionnairePage = () => {
-  const { questionnaire, response, isLoading, error, isPageValid } = useQuestionnaire();
+  const { questionnaire, response, isLoading, error, isPageValid, markValidationErrors, clearValidationErrors } = useQuestionnaire();
   const { isConnected, openWallet, submitData, isSubmitting } = useWelshare({
     applicationId: import.meta.env.VITE_APP_ID,
-    //apiBaseUrl: "https://staging.wallet.welshare.app",
-    apiBaseUrl: "https://localhost:3000",
+    apiBaseUrl: "https://staging.wallet.welshare.app",
+    //apiBaseUrl: "https://localhost:3000",
     environment: import.meta.env.VITE_ENVIRONMENT,
   });
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
@@ -96,8 +96,14 @@ export const QuestionnairePage = () => {
 
   const handleNext = () => {
     if (currentPageIndex < pages.length - 1) {
-      setCurrentPageIndex(currentPageIndex + 1);
-      window.scrollTo(0, 0);
+      if (isCurrentPageValid) {
+        clearValidationErrors();
+        setCurrentPageIndex(currentPageIndex + 1);
+        window.scrollTo(0, 0);
+      } else {
+        // Mark validation errors for unanswered required questions
+        markValidationErrors(currentPage.item || []);
+      }
     }
   };
 
@@ -187,25 +193,22 @@ export const QuestionnairePage = () => {
 
           {currentPageIndex < pages.length - 1 ? (
             <button 
-              className="btn btn-primary" 
+              className={`btn btn-primary ${!isCurrentPageValid ? 'btn-disabled' : ''}`}
               onClick={handleNext}
-              disabled={!isCurrentPageValid}
             >
               Next
             </button>
           ) : !isConnected ? (
             <button 
-              className="btn btn-success" 
-              onClick={openWallet}
-              disabled={!isCurrentPageValid}
+              className={`btn btn-success ${!isCurrentPageValid ? 'btn-disabled' : ''}`}
+              onClick={!isCurrentPageValid ? () => markValidationErrors(currentPage.item || []) : openWallet}
             >
               <WelshareLogo /> Connect Wallet to Submit
             </button>
           ) : (
             <button
-              className="btn btn-success"
-              onClick={handleSubmit}
-              disabled={isSubmitting || !isCurrentPageValid}
+              className={`btn btn-success ${!isCurrentPageValid ? 'btn-disabled' : ''}`}
+              onClick={!isCurrentPageValid ? () => markValidationErrors(currentPage.item || []) : handleSubmit}
             >
               <WelshareLogo />
               {isSubmitting ? "Submitting..." : "Submit"}

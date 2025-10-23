@@ -8,6 +8,10 @@ interface QuestionnaireContextType {
   getAnswer: (linkId: string) => QuestionnaireResponseAnswer | undefined;
   isPageValid: (pageItems: QuestionnaireItem[]) => boolean;
   getRequiredQuestions: (pageItems: QuestionnaireItem[]) => QuestionnaireItem[];
+  getUnansweredRequiredQuestions: (pageItems: QuestionnaireItem[]) => QuestionnaireItem[];
+  markValidationErrors: (pageItems: QuestionnaireItem[]) => void;
+  clearValidationErrors: () => void;
+  hasValidationError: (linkId: string) => boolean;
   isLoading: boolean;
   error: string | null;
 }
@@ -35,6 +39,7 @@ export const QuestionnaireProvider = ({ children }: QuestionnaireProviderProps) 
   });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [validationErrors, setValidationErrors] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     const loadQuestionnaire = async () => {
@@ -93,6 +98,13 @@ export const QuestionnaireProvider = ({ children }: QuestionnaireProviderProps) 
       newResponse.item = findOrCreateItem(newResponse.item);
       return newResponse;
     });
+
+    // Clear validation error for this question when answered
+    setValidationErrors(prev => {
+      const newErrors = new Set(prev);
+      newErrors.delete(linkId);
+      return newErrors;
+    });
   };
 
   const getAnswer = (linkId: string): QuestionnaireResponseAnswer | undefined => {
@@ -123,6 +135,39 @@ export const QuestionnaireProvider = ({ children }: QuestionnaireProviderProps) 
     });
   };
 
+  const getUnansweredRequiredQuestions = (pageItems: QuestionnaireItem[]): QuestionnaireItem[] => {
+    const requiredQuestions = getRequiredQuestions(pageItems);
+    
+    return requiredQuestions.filter(question => {
+      const answer = getAnswer(question.linkId);
+      if (!answer) return true;
+      
+      // Check if the answer has any meaningful value
+      return answer.valueBoolean === undefined &&
+             answer.valueInteger === undefined &&
+             answer.valueDecimal === undefined &&
+             answer.valueString === undefined &&
+             answer.valueCoding === undefined &&
+             answer.valueDate === undefined &&
+             answer.valueDateTime === undefined &&
+             answer.valueTime === undefined;
+    });
+  };
+
+  const markValidationErrors = (pageItems: QuestionnaireItem[]) => {
+    const unansweredRequired = getUnansweredRequiredQuestions(pageItems);
+    const errorLinkIds = unansweredRequired.map(q => q.linkId);
+    setValidationErrors(new Set(errorLinkIds));
+  };
+
+  const clearValidationErrors = () => {
+    setValidationErrors(new Set());
+  };
+
+  const hasValidationError = (linkId: string): boolean => {
+    return validationErrors.has(linkId);
+  };
+
   return (
     <QuestionnaireContext.Provider
       value={{
@@ -132,6 +177,10 @@ export const QuestionnaireProvider = ({ children }: QuestionnaireProviderProps) 
         getAnswer,
         isPageValid,
         getRequiredQuestions,
+        getUnansweredRequiredQuestions,
+        markValidationErrors,
+        clearValidationErrors,
+        hasValidationError,
         isLoading,
         error,
       }}
