@@ -15,6 +15,15 @@ export type QuestionnaireItemAnswerOption = {
   initialSelected?: boolean;
 }
 
+export type Extension = {
+  url: string;
+  valueBoolean?: boolean;
+  valueString?: string;
+  valueCodeableConcept?: {
+    coding?: Coding[];
+  };
+}
+
 export type QuestionnaireItem = {
   linkId: string;
   definition?: string;
@@ -51,6 +60,7 @@ export type QuestionnaireItem = {
     valueString?: string;
     valueCoding?: Coding;
   }>;
+  extension?: Extension[];
   item?: QuestionnaireItem[];
 }
 

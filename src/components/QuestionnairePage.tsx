@@ -12,6 +12,10 @@ export const QuestionnairePage = () => {
     apiBaseUrl: "https://staging.wallet.welshare.app",
     //apiBaseUrl: "https://localhost:3000",
     environment: import.meta.env.VITE_ENVIRONMENT,
+    interpolateSocials: {
+      emailAddress: "email-address",
+      twitter: "twitter",
+    },
   });
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [submitted, setSubmitted] = useState(false);

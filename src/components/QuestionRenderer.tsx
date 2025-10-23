@@ -11,6 +11,17 @@ export const QuestionRenderer = ({ item }: QuestionRendererProps) => {
   const currentAnswer = getAnswer(item.linkId);
   const hasError = hasValidationError(item.linkId);
 
+  // Check if this field should be hidden (auto-populated)
+  const isAutoPopulated = item.extension?.some((ext) => 
+    ext.url === "http://hl7.org/fhir/StructureDefinition/questionnaire-hidden" && 
+    ext.valueBoolean === true
+  );
+
+  // Don't render auto-populated fields
+  if (isAutoPopulated) {
+    return null;
+  }
+
   const handleChoiceChange = (valueCoding: { system?: string; code?: string; display?: string }, valueInteger?: number) => {
     updateAnswer(item.linkId, { valueCoding, valueInteger });
   };
@@ -51,7 +62,7 @@ export const QuestionRenderer = ({ item }: QuestionRendererProps) => {
                     name={item.linkId}
                     value={option.valueCoding?.code}
                     checked={isSelected}
-                    onChange={() => handleChoiceChange(option.valueCoding, option.valueInteger)}
+                    onChange={() => handleChoiceChange(option.valueCoding || {}, option.valueInteger)}
                   />
                   <span className="choice-label">{option.valueCoding?.display}</span>
                 </label>
