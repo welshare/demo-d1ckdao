@@ -9,8 +9,8 @@ export const QuestionnairePage = () => {
   const { questionnaire, response, isLoading, error } = useQuestionnaire();
   const { isConnected, openWallet, submitData, isSubmitting } = useWelshare({
     applicationId: import.meta.env.VITE_APP_ID,
-    //apiBaseUrl: "https://staging.wallet.welshare.app",
-    apiBaseUrl: "https://localhost:3000",
+    apiBaseUrl: "https://staging.wallet.welshare.app",
+    //apiBaseUrl: "https://localhost:3000",
     environment: import.meta.env.VITE_ENVIRONMENT,
   });
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
@@ -41,10 +41,11 @@ export const QuestionnairePage = () => {
       <>
         <header className="app-header">
           <div className="app-logo">
-            <WelshareLogo /> DuckDao
-          </div>
-          <div className="app-disclaimer">
-            This is a demo and not supposed to be used in production
+            <img
+              src="/lime-green-text-logo.png"
+              alt="DickXBT Logo"
+              width={180}
+            />
           </div>
         </header>
         <div className="questionnaire-page">

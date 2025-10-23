@@ -1,5 +1,5 @@
-import type { QuestionnaireItem } from '../types/fhir';
 import { useQuestionnaire } from '../contexts/QuestionnaireContext';
+import type { QuestionnaireItem } from '../types/fhir';
 import './QuestionRenderer.css';
 
 interface QuestionRendererProps {

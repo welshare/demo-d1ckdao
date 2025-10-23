@@ -1,6 +1,8 @@
-import { QuestionnaireProvider } from './contexts/QuestionnaireContext'
-import { QuestionnairePage } from './components/QuestionnairePage'
-import './App.css'
+
+import { QuestionnairePage } from './components/QuestionnairePage';
+import { QuestionnaireProvider } from './contexts/QuestionnaireContext';
+
+import './App.css';
 
 function App() {
   return (
