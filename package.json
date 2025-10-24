@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@fontsource/rajdhani": "^5.2.7",
-    "@welshare/react": "^0.2.2",
+    "@welshare/react": "^0.2.3",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-router-dom": "^7.9.3"

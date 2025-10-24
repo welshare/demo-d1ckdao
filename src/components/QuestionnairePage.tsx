@@ -2,19 +2,28 @@ import { Schemas, useWelshare, WelshareLogo } from "@welshare/react";
 import { useEffect, useRef, useState } from "react";
 import { useQuestionnaire } from "../contexts/QuestionnaireContext";
 import type { QuestionnaireItem } from "../types/fhir";
+import { Footer } from "./Footer";
+import { Header } from "./Header";
 import { QuestionRenderer } from "./QuestionRenderer";
 import "./QuestionnairePage.css";
 
 export const QuestionnairePage = () => {
-  const { questionnaire, response, isLoading, error, isPageValid, markValidationErrors, clearValidationErrors } = useQuestionnaire();
+  const {
+    questionnaire,
+    response,
+    isLoading,
+    error,
+    isPageValid,
+    markValidationErrors,
+    clearValidationErrors,
+  } = useQuestionnaire();
   const { isConnected, openWallet, submitData, isSubmitting } = useWelshare({
     applicationId: import.meta.env.VITE_APP_ID,
-    apiBaseUrl: "https://staging.wallet.welshare.app",
-    //apiBaseUrl: "https://localhost:3000",
+    apiBaseUrl: import.meta.env.VITE_API_BASE_URL,
     environment: import.meta.env.VITE_ENVIRONMENT,
     interpolateSocials: {
       emailAddress: "email-address",
-      twitter: "twitter",
+      twitter: "twitter-handle",
     },
   });
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
@@ -43,50 +52,29 @@ export const QuestionnairePage = () => {
   if (submitted) {
     return (
       <>
-        <header className="app-header">
-          <div className="app-logo">
-            <img
-              src="/lime-green-text-logo.png"
-              alt="DickXBT Logo"
-              width={180}
-            />
-          </div>
-        </header>
+        <Header />
         <div className="questionnaire-page">
-          <div className="questionnaire-header">
-            <h1>Thank You!</h1>
-          </div>
+          <h1 className="accent-color">
+            🎉<span style={{ marginRight: "10px" }}> </span> Thank You!
+          </h1>
+
           <div className="page-content">
-            <p style={{ textAlign: "center", fontSize: "1.2rem" }}>
-              Thank you for your submission. Your responses have been securely
-              stored on Welshare.
+            <h2>Thank you for your submission.</h2>{" "}
+            <p>
+              {" "}
+              Your responses have been securely stored on your{" "}
+              <a
+                href={`${import.meta.env.VITE_API_BASE_URL}/profile#questionnaires`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Welshare Health Profile
+              </a>
+              .
             </p>
           </div>
         </div>
-        <footer className="app-footer">
-          <div className="footer-left">
-            Copyright by Welshare UG (haftungsbeschränkt)
-          </div>
-          <div className="footer-right">
-            This is a demo of how to submit ED questionnaires to the private
-            welshare wallet.{" "}
-            <a
-              href="https://docs.welshare.app/sdk"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Find out more on Welshare's docs
-            </a>
-            {" · "}
-            <a
-              href="https://staging.wallet.welshare.app/api/questionnaire/63025fed-3ab2-4c66-963a-7fba79ca40a9"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Questionnaire definition
-            </a>
-          </div>
-        </footer>
+        <Footer />
       </>
     );
   }
@@ -94,9 +82,11 @@ export const QuestionnairePage = () => {
   // Each top-level group item is a page
   const pages = questionnaire.item.filter((item) => item.type === "group");
   const currentPage = pages[currentPageIndex];
-  
+
   // Check if current page is valid (all required questions answered)
-  const isCurrentPageValid = currentPage?.item ? isPageValid(currentPage.item) : true;
+  const isCurrentPageValid = currentPage?.item
+    ? isPageValid(currentPage.item)
+    : true;
 
   const handleNext = () => {
     if (currentPageIndex < pages.length - 1) {
@@ -196,23 +186,37 @@ export const QuestionnairePage = () => {
           </button>
 
           {currentPageIndex < pages.length - 1 ? (
-            <button 
-              className={`btn btn-primary ${!isCurrentPageValid ? 'btn-disabled' : ''}`}
+            <button
+              className={`btn btn-primary ${
+                !isCurrentPageValid ? "btn-disabled" : ""
+              }`}
               onClick={handleNext}
             >
               Next
             </button>
           ) : !isConnected ? (
-            <button 
-              className={`btn btn-success ${!isCurrentPageValid ? 'btn-disabled' : ''}`}
-              onClick={!isCurrentPageValid ? () => markValidationErrors(currentPage.item || []) : openWallet}
+            <button
+              className={`btn btn-success ${
+                !isCurrentPageValid ? "btn-disabled" : ""
+              }`}
+              onClick={
+                !isCurrentPageValid
+                  ? () => markValidationErrors(currentPage.item || [])
+                  : openWallet
+              }
             >
-              <WelshareLogo /> Connect Wallet to Submit
+              <WelshareLogo /> Connect Your Health Profile
             </button>
           ) : (
             <button
-              className={`btn btn-success ${!isCurrentPageValid ? 'btn-disabled' : ''}`}
-              onClick={!isCurrentPageValid ? () => markValidationErrors(currentPage.item || []) : handleSubmit}
+              className={`btn btn-success ${
+                !isCurrentPageValid ? "btn-disabled" : ""
+              }`}
+              onClick={
+                !isCurrentPageValid
+                  ? () => markValidationErrors(currentPage.item || [])
+                  : handleSubmit
+              }
             >
               <WelshareLogo />
               {isSubmitting ? "Submitting..." : "Submit"}
@@ -220,34 +224,7 @@ export const QuestionnairePage = () => {
           )}
         </div>
       </div>
-      <footer className="app-footer">
-        <div className="footer-left">© DICKGPT</div>
-        <div className="footer-right">
-          <a
-            href="https://welshare.health"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            supported by Welshare
-          </a>
-          {" · "}
-          <a
-            href="https://docs.welshare.app/sdk"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            docs
-          </a>
-          {" · "}
-          <a
-            href="https://staging.wallet.welshare.app/api/questionnaire/63025fed-3ab2-4c66-963a-7fba79ca40a9"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Questionnaire definition
-          </a>
-        </div>
-      </footer>
+      <Footer />
     </>
   );
 };

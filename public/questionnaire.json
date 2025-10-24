@@ -5,7 +5,7 @@
   "url": "http://d1ckdao.welshare.app/fhir/Questionnaire/demo-dickdao-assessment",
   "version": "1.0.0",
   "name": "DickDAOAssessment",
-  "title": "(Demo) DickDAO Comprehensive Sexual and General Health Assessment",
+  "title": "(Demo 2) DickDAO Comprehensive Sexual and General Health Assessment",
   "status": "active",
   "subjectType": ["Patient"],
   "date": "2025-10-02",
@@ -1027,6 +1027,31 @@
           "text": "Weight (kg)",
           "type": "decimal",
           "required": true
+        },
+        {
+          "linkId": "twitter-handle",
+          "text": "Twitter Handle (auto-populated)",
+          "type": "string",
+          "required": false,
+          "repeats": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-hidden",
+              "valueBoolean": true
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
+              "valueCodeableConcept": {
+                "coding": [
+                  {
+                    "system": "http://hl7.org/fhir/questionnaire-item-control",
+                    "code": "auto-populated",
+                    "display": "Auto-populated field"
+                  }
+                ]
+              }
+            }
+          ]
         },
         {
           "linkId": "email-address",

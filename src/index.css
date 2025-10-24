@@ -19,8 +19,9 @@
 
 a {
   font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+  color: var(--text-color);
+  text-decoration: underline;
+  text-underline-offset: 2px;
   
 }
 a:hover {
@@ -39,6 +40,10 @@ body {
 h1 {
   font-size: 2em;
   line-height: 1.1;
+}
+
+.accent-color {
+  color: var(--accent-color);
 }
 
 h2 {

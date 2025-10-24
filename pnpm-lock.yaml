@@ -12,8 +12,8 @@ importers:
         specifier: ^5.2.7
         version: 5.2.7
       '@welshare/react':
-        specifier: ^0.2.2
-        version: 0.2.2(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+        specifier: ^0.2.3
+        version: 0.2.3(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       react:
         specifier: ^19.1.1
         version: 19.2.0
@@ -597,8 +597,8 @@ packages:
     peerDependencies:
       vite: ^4.2.0 || ^5.0.0 || ^6.0.0 || ^7.0.0
 
-  '@welshare/react@0.2.2':
-    resolution: {integrity: sha512-XG6fFaxelIBC9dnjOthhIA8TSRDOhkLfLu/gtg8gaUlGCXLePlFyAEXARY6YTN61GvZ3t9zYL+4S8Pgd8tQsHQ==}
+  '@welshare/react@0.2.3':
+    resolution: {integrity: sha512-x/23TXyAkv0N5WgEmsf2541Pc15mUhctxegBVZ+A3EeR+yZR9YU/NzUlFzzdSCwz8ycubGlyR6X18+R2kJA/ow==}
     engines: {node: '>=20.0.0'}
     peerDependencies:
       react: ^19
@@ -1663,7 +1663,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@welshare/react@0.2.2(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
+  '@welshare/react@0.2.3(react-dom@19.2.0(react@19.2.0))(react@19.2.0)':
     dependencies:
       react: 19.2.0
       react-dom: 19.2.0(react@19.2.0)
