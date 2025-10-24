@@ -1,47 +1,30 @@
 .app-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  background: #68fe00;
-  border-bottom: 2px solid black;
-  padding: 2rem;
-  z-index: 1000;
+  background: #000;
+  border-bottom: 1px solid var(--border-color);
+  padding: 1rem;
 }
 
 .app-logo {
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-weight: 700;
   color: black;
-}
-
-.app-disclaimer {
-  font-size: 0.9rem;
-  color: black;
-  margin-top: 0.5rem;
 }
 
 .questionnaire-page {
   max-width: 800px;
   margin: 0 auto;
   padding: 2rem 1rem;
-  padding-top: calc(6rem + 4rem + 2px);
   min-height: calc(100vh - 8rem - 4px);
 }
 
 .app-footer {
-  background: #68fe00;
-  border-top: 2px solid black;
+  background: #000;
+  border-top: 1px solid var(--border-color);
   padding: 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 2rem;
-  color: black;
-}
-
-.footer-left {
-  font-weight: 600;
 }
 
 .footer-right {
@@ -49,22 +32,24 @@
 }
 
 .footer-right a {
-  color: black;
+  color: var(--text-color);
   text-decoration: underline;
-  font-weight: 600;
 }
 
 .questionnaire-header {
   margin-bottom: 2rem;
-  background: #d4f503;
-  padding: 2rem;
-  border-radius: 24px;
+  background: none;
+  border: 1px solid var(--border-color);
+  padding: 16px;
+  border-radius: var(--border-radius);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .questionnaire-header h1 {
-  font-size: 1.75rem;
-  color: #266d16;
+  font-size: 1.15rem;
+  color: var(--accent-color);
+  text-transform: uppercase;
+  font-weight: 700;
   margin-bottom: 1.5rem;
   margin-top: 0;
 }
@@ -80,32 +65,32 @@
 
 .progress-fill {
   height: 100%;
-  background: #18df72;
+  background: var(--accent-green);
   transition: width 0.3s ease;
 }
 
 .page-indicator {
   text-align: center;
-  color: #266d16;
+  color: var(--accent-green);
   font-size: 0.9rem;
   font-weight: 600;
   margin-bottom: 0;
 }
 
 .page-content {
-  background: #d4f503;
-  padding: 2rem;
-  border-radius: 24px;
+  background: none;
+  border: 1px solid var(--border-color);
+  padding: 1.25rem;
+  border-radius: var(--border-radius);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 2rem;
 }
 
 .page-title {
-  font-size: 1.5rem;
-  color: #2c3e50;
-  margin-bottom: 2rem;
+  font-size: 1.15rem;
+  color: var(--accent-color);
+  margin-bottom: 1.25rem;
   text-transform: uppercase;
-  
 }
 
 .question-group {
@@ -113,8 +98,8 @@
 }
 
 .question-group h3 {
-  font-size: 1.25rem;
-  color: #34495e;
+  font-size: 1rem;
+  font-weight: 700;
   margin-bottom: 1rem;
 }
 
@@ -125,12 +110,14 @@
   margin-top: 2rem;
 }
 
+
 .btn {
-  padding: 1.25rem 3rem;
+  padding: .5rem 1rem;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 500;
   border: none;
-  border-radius: 50px;
+  border-radius: var(--border-radius);
+  text-transform: lowercase;
   cursor: pointer;
   transition: all 0.2s ease;
   font-family: inherit;
@@ -145,14 +132,17 @@
   cursor: not-allowed;
 }
 
+.btn-disabled {
+  opacity: 0.5;
+  cursor: pointer;
+}
+
 .btn-primary {
-  background: #d4f503;
-  color: #266d16;
-  font-weight: 700;
+  background: var(--accent-color);
+  color: black;
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: #c5e603;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(212, 245, 3, 0.3);
 }
@@ -160,7 +150,6 @@
 .btn-secondary {
   background: #354152;
   color: white;
-  font-weight: 700;
 }
 
 .btn-secondary:hover:not(:disabled) {
@@ -168,13 +157,11 @@
 }
 
 .btn-success {
-  background: #d4f503;
-  color: #266d16;
-  font-weight: 700;
+  background: var(--accent-color);
 }
 
 .btn-success:hover {
-  background: #c5e603;
+  background: var(--accent-color);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(212, 245, 3, 0.3);
 }

@@ -1,5 +1,5 @@
-import type { QuestionnaireItem } from '../types/fhir';
 import { useQuestionnaire } from '../contexts/QuestionnaireContext';
+import type { QuestionnaireItem } from '../types/fhir';
 import './QuestionRenderer.css';
 
 interface QuestionRendererProps {
@@ -7,10 +7,22 @@ interface QuestionRendererProps {
 }
 
 export const QuestionRenderer = ({ item }: QuestionRendererProps) => {
-  const { updateAnswer, getAnswer } = useQuestionnaire();
+  const { updateAnswer, getAnswer, hasValidationError } = useQuestionnaire();
   const currentAnswer = getAnswer(item.linkId);
+  const hasError = hasValidationError(item.linkId);
 
-  const handleChoiceChange = (valueCoding: any, valueInteger?: number) => {
+  // Check if this field should be hidden (auto-populated)
+  const isAutoPopulated = item.extension?.some((ext) => 
+    ext.url === "http://hl7.org/fhir/StructureDefinition/questionnaire-hidden" && 
+    ext.valueBoolean === true
+  );
+
+  // Don't render auto-populated fields
+  if (isAutoPopulated) {
+    return null;
+  }
+
+  const handleChoiceChange = (valueCoding: { system?: string; code?: string; display?: string }, valueInteger?: number) => {
     updateAnswer(item.linkId, { valueCoding, valueInteger });
   };
 
@@ -40,7 +52,7 @@ export const QuestionRenderer = ({ item }: QuestionRendererProps) => {
     switch (item.type) {
       case 'choice':
         return (
-          <div className="question-choice">
+          <div className={`question-choice ${item.required ? 'required' : ''}`}>
             {item.answerOption?.map((option, index) => {
               const isSelected = currentAnswer?.valueCoding?.code === option.valueCoding?.code;
               return (
@@ -50,7 +62,7 @@ export const QuestionRenderer = ({ item }: QuestionRendererProps) => {
                     name={item.linkId}
                     value={option.valueCoding?.code}
                     checked={isSelected}
-                    onChange={() => handleChoiceChange(option.valueCoding, option.valueInteger)}
+                    onChange={() => handleChoiceChange(option.valueCoding || {}, option.valueInteger)}
                   />
                   <span className="choice-label">{option.valueCoding?.display}</span>
                 </label>
@@ -97,7 +109,7 @@ export const QuestionRenderer = ({ item }: QuestionRendererProps) => {
 
       case 'boolean':
         return (
-          <div className="question-choice">
+          <div className={`question-choice ${item.required ? 'required' : ''}`}>
             <label className={`choice-option ${currentAnswer?.valueBoolean === true ? 'selected' : ''}`}>
               <input
                 type="radio"
@@ -125,7 +137,7 @@ export const QuestionRenderer = ({ item }: QuestionRendererProps) => {
   };
 
   return (
-    <div className="question-container">
+    <div className={`question-container ${hasError ? 'unanswered-error' : ''}`}>
       <div className="question-text">
         {item.text}
         {item.required && <span className="required-indicator">*</span>}
