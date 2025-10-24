@@ -42,6 +42,8 @@
 }
 
 .choice-option:hover {
+  border-color: white;
+  color: white;
   background: var(--border-color);
 }
 
@@ -64,7 +66,7 @@
   flex-shrink: 0;
 }
 .choice-option:hover input[type="radio"] {
-  border-color: black;
+  border-color: white;
 }
 
 .choice-option input[type="radio"]:checked {
